@@ -7,10 +7,4 @@ Zo vermijd je eventuele discussies ondereen over wat de score is. Ook kan je je 
 ## Extra info
 Voor mde zal er juist nog gekeken moeten worden om de ApiLinkHelper klasse aan te passen. Hier staat momenteel mijn IP en dat zal dus nog moeten veranderd worden.
 
-## Inloggegevens
-
-MDE, PIN en PRI:
-
-username: WolloW of caessens.marco@gmail.com
-password: TEST
 
