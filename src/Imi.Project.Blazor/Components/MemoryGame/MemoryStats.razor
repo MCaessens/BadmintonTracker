@@ -1,0 +1,22 @@
+﻿<div class="stat-attribute-container">
+    <p class="stat-attribute">Score <br/> @CurrentInstance.Score</p>
+    <p class="stat-attribute">Attempts <br/> @CurrentInstance.Attempts</p>
+    <p class="stat-attribute">Games played <br/> @CurrentInstance.SetsPlayed</p>
+</div>
+
+@code {
+
+    [Parameter]
+    public MemoryGameInstance CurrentInstance { get; set; }
+
+    protected override void OnInitialized()
+    {
+        CurrentInstance.OnTurnEnded += OnGameTurnEnded;
+    }
+
+    private async void OnGameTurnEnded(object sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

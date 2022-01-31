@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div id="register">
+    <form v-on:submit.prevent="registerAsync">
+        <div class="form-group">
+            <label for="inputFirstname">Firstname</label>
+            <input minlength="3" required type="text" class="form-control" id="inputFirstname" placeholder="Enter firstname" v-model="registerForm.firstName">
+        </div>
+        <div class="form-group">
+            <label for="inputLastname">Lastname</label>
+            <input minlength="3" required type="text" class="form-control" id="inputLastname" placeholder="Enter lastname" v-model="registerForm.lastName">
+        </div>
+        <div class="form-group">
+            <label for="inputUsername">Username</label>
+            <input minlength="3" required type="text" class="form-control" id="inputUsername" placeholder="Enter your username" v-model="registerForm.userName">
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">E-mail</label>
+            <input minlength="3" required type="email" class="form-control" id="inputEmail" placeholder="Enter your e-mail address" v-model="registerForm.email">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input minlength="5" type="password" required class="form-control" id="inputPassword" placeholder="Enter your password" v-model="registerForm.password">
+        </div>
+        <div class="form-group">
+            <label for="inputConfirmPassword">Confirm Password</label>
+            <input minlength="5" type="password" required class="form-control" id="inputConfirmPassword" placeholder="Re-enter your password" v-model="registerForm.confirmPassword">
+        </div>
+        <div class="form-group">
+            <label for="inputDateOfBirth">Date of Birth</label>
+            <input type="date" required class="form-control" id="inputDateOfBirth" v-model="registerForm.dateOfBirth">
+        </div>
+        <a v-on:click="toLogin" id="dontHaveAnAccount" class="form-text text-primary">Already have an account? Login here.</a>
+        <button type="submit" class="btn btn-primary">
+            <span v-if="registering" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Register
+        </button>
+    </form>
+    <partial name="NotificationModal"></partial>
+</div>
+
+@section Scripts{
+    <script src="~/js/register.js"></script>
+}

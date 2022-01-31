@@ -1,0 +1,125 @@
+﻿@inject IJSRuntime _jsRuntime;
+@if (_dataLoaded)
+{
+    <div class="row justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Badminton Game</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <EditForm Model="@GameModel" OnValidSubmit="SaveAsync">
+                        <div class="fw-bold"> Opponent</div>
+                        <InputText class="form-control" id="opponent" @bind-Value="@GameModel.Opponent"/>
+                        <div class="fw-bold">Your Score</div>
+                        <InputNumber class="form-control" id="your-score" step="1" @bind-Value="@GameModel.Score"/>
+                        <div class="fw-bold">Opponent' Score</div>
+                        <InputNumber class="form-control" id="opponent-score" step="1" @bind-Value="@GameModel.OpponentScore"/>
+                        <div class="fw-bold">Status</div>
+                        <div>@GameModel.Status</div>
+                        <div class="fw-bold">Winner</div>
+                        <div>@GameModel.Winner</div>
+                        <div class="fw-bold">Location</div>
+                        <div>
+                            <select class="form-select" @bind="@GameModel.LocationId">
+                                <option></option>
+                                @foreach (var item in _locations)
+                                {
+                                    <option value="@item.Id">@item.Street, @item.PostalCode @item.City </option>
+                                }
+                            </select>
+                            <div class="fw-bold">Racket</div>
+                            <select class="form-select" @bind="@GameModel.RacketId">
+                                <option></option>
+                                @foreach (var item in _rackets)
+                                {
+                                    <option value="@item.Id">@item.Brand @item.Model</option>
+                                }
+                            </select>
+                            <div class="fw-bold">Shuttle</div>
+                            <select class="form-select" @bind="@GameModel.ShuttleCockId">
+                                <option></option>
+                                @foreach (var item in _shuttles)
+                                {
+                                    <option value="@item.Id">@item.Brand @item.Model</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" @onclick="DeleteAsync" class="btn btn-danger">Delete</button>
+                            <button type="button" @onclick="InvokeCancel" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </EditForm>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+else
+{
+    <div class="center">
+        <p class="state-message">Loading required data...</p>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    public IGamesService GamesService { get; set; }
+
+    [Inject]
+    public ILocationsService LocationsService { get; set; }
+
+    [Inject]
+    public IRacketsService RacketsService { get; set; }
+
+    [Inject]
+    public IShuttleCocksService ShuttleCocksService { get; set; }
+
+    [Parameter]
+    public GameModel GameModel { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<GameModel> OnSave { get; set; }
+
+    private IEnumerable<LocationModel> _locations = new List<LocationModel>();
+    private IEnumerable<RacketModel> _rackets = new List<RacketModel>();
+    private IEnumerable<ShuttleCockModel> _shuttles = new List<ShuttleCockModel>();
+    private bool _dataLoaded = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _locations = (await LocationsService.GetAllLocationsAsync()).Results;
+        _rackets = (await RacketsService.GetAllRacketsAsync()).Results;
+        _shuttles = (await ShuttleCocksService.GetAllShuttleCocksAsync()).Results;
+        _dataLoaded = true;
+    }
+
+    private async Task InvokeCancel()
+    {
+        await OnCancel.InvokeAsync(null);
+    }
+
+    private async Task DeleteAsync()
+    {
+        await GamesService.DeleteByIdAsync(GameModel.Id);
+        await OnDelete.InvokeAsync(null);
+    }
+
+    private async Task SaveAsync()
+    {
+        var updatedModel = await GamesService.UpdateAsync(GameModel);
+        if (updatedModel == null) await _jsRuntime.InvokeVoidAsync("alert", "Given values are not valid!");
+
+        await OnSave.InvokeAsync(updatedModel);
+    }
+
+}

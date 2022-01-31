@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.RegisterPage"            
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="100*" ></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Register"/>
+                </Frame>
+            </StackLayout>
+            <ScrollView Grid.Row="1">
+                <StackLayout Padding="20">
+                    <Frame>
+                        <StackLayout  HorizontalOptions="Center" >
+                            <StackLayout BindingContext="{Binding RegisterModel}">
+                                <Label Style="{StaticResource EntryLabel}" Text="First name"/>
+                                <Entry Text="{Binding FirstName}" Placeholder="John"/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Last name"/>
+                                <Entry Text="{Binding LastName}" Placeholder="Doe"/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Username"/>
+                                <Entry Text="{Binding UserName}" Placeholder="JohnDoe"/>
+                                <Label Style="{StaticResource EntryLabel}" Text="E-mail address"/>
+                                <Entry Text="{Binding Email}" Placeholder="johndoe@example.com"/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Password"/>
+                                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Enter password..."/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Confirm password"/>
+                                <Entry Text="{Binding ConfirmPassword}" IsPassword="True" Placeholder="Confirm password..."/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Date Of Birth"/>
+                                <DatePicker Date="{Binding DateOfBirth}" />
+                            </StackLayout>
+                            <Button Command="{Binding OnRegister}" Text="Register"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+            <ActivityIndicator Grid.Row="1" Color="White" BackgroundColor="{StaticResource BackgroundColor}" IsVisible="{Binding IsRegistering}" IsRunning="{Binding IsRegistering}"></ActivityIndicator>
+            <StackLayout Grid.Row="2">
+                <Frame Style="{StaticResource Header}">
+                </Frame>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

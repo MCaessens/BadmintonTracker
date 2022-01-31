@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Shuttles";
+}
+
+<div id="app">
+    <div v-if="token === undefined" class="text-center">
+        <p>Please login to manage your shuttles.</p>
+    </div>
+    <div v-if="!shuttlesLoaded && token !== undefined" class="text-center">
+        <span class="spinner-grow" role="status" aria-hidden="true"></span>
+    </div>
+    <div v-if="token !== undefined && shuttlesLoaded && selectedShuttle === null && newShuttle === null">
+        <div class="text-center add-button-custom">
+            <button v-on:click="() => newShuttle = {}" class="btn btn-success">Add shuttle</button>
+        </div>
+        <div class="d-flex justify-content-around flex-row flex-wrap">
+            <div class="card" style="width: 20rem;" v-for="shuttle in shuttles">
+                <img class="card-img-top" :src="shuttle.imageUrl" alt="Picture of shuttle.brand"/>
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{shuttle.brand}}<br/>{{shuttle.model}}</h4>
+                </div>
+                <div class="card-body text-center">
+                    <button v-on:click="() => selectedShuttle = shuttle" class="btn btn-primary">Details</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-for="i in parseInt(pageInfo.pageAmount)">
+                    <a class="page-link" v-on:click="loadShuttlesByPage(i)">{{i}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div v-if="selectedShuttle !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="updateAsync" enctype="multipart/form-data">
+            <img class="card-img-top" :src="selectedShuttle.imageUrl" alt="Picture of selectedShuttle.name"/>
+            <div class="card-body">
+                <h4 class="card-title text-center">Edit Shuttle</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="shuttleBrandInput">Shuttle brand</label>
+                        <input required type="text" class="form-control" id="shuttleBrandInput" placeholder="Brand" v-model="selectedShuttle.brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="shuttleModelInput">Shuttle model</label>
+                        <input required type="text" class="form-control" id="shuttleModelInput" placeholder="Model" v-model="selectedShuttle.model">
+                    </div>
+                    <div class="form-group">
+                        <label for="shuttleTypeInput">Shuttle type</label>
+                        <input required type="text" class="form-control" id="shuttleTypeInput" placeholder="Shuttle type" v-model="selectedShuttle.shuttleType">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="updateImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="updateImageInput" ref="updateImageInput" v-on:change="updateImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isUpdating" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="deleteAsync" type="button" class="btn btn-danger">
+                    <span v-if="isDeleting" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Delete
+                </button>
+                <button v-on:click="() => selectedShuttle = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div v-if="newShuttle !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="addAsync" enctype="multipart/form-data">
+            <div class="card-body">
+                <h4 class="card-title text-center">Badminton shuttle</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addShuttleBrandInput">Shuttle brand</label>
+                        <input required type="text" class="form-control" id="addShuttleBrandInput" placeholder="Brand" v-model="newShuttle.brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="addShuttleModelInput">Shuttle model</label>
+                        <input required type="text" class="form-control" id="addShuttleModelInput" placeholder="Model" v-model="newShuttle.model">
+                    </div>
+                    <div class="form-group">
+                        <label for="shuttleTypeInput">Shuttle Type</label>
+                        <input required type="text" class="form-control" id="addShuttleTypeInput" placeholder="Shuttle type" v-model="newShuttle.shuttleType">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="addImageInput" ref="addImageInput" v-on:change="updateImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isAdding" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="() => newShuttle = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <partial name="NotificationModal"></partial>
+</div>
+
+@section Scripts{
+    <script src="~/js/shuttles.js"></script>
+}

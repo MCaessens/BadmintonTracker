@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.GameDetailPage"
+             xmlns:behaviors="clr-namespace:Imi.Project.Mobile.Behaviours"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Games" />
+                </Frame>
+            </StackLayout>
+            <ScrollView Grid.Row="1">
+                <StackLayout Spacing="8">
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Image Source="{Binding SelectedLocation.ImageUrl}" />
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Badminton Game" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Players" />
+                            <StackLayout HorizontalOptions="EndAndExpand">
+                                <Label Style="{StaticResource PropertyLabel}" Text="{Binding SelectedModel.UserName}" />
+                                <Entry Style="{StaticResource PlayersDisplayEntry}"
+                                       Text="{Binding SelectedModel.Opponent}" />
+                                <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.OpponentError}">
+                                    <Label.Behaviors>
+                                        <behaviors:ErrorLabelBehavior />
+                                    </Label.Behaviors>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Winner" />
+                            <Label Style="{StaticResource PropertyLabel}" Text="{Binding SelectedModel.Winner}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Location" />
+                            <Picker
+                                ItemsSource="{Binding Locations}"
+                                SelectedItem="{Binding SelectedLocation}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Racket" />
+                            <Picker
+                                ItemsSource="{Binding Rackets}"
+                                SelectedItem="{Binding SelectedRacket}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Shuttle" />
+                            <Picker
+                                ItemsSource="{Binding ShuttleCocks}"
+                                SelectedItem="{Binding SelectedShuttleCock}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Your score" />
+                            <Label Style="{StaticResource EntryLabel}" Text="{Binding Score}" />
+                            <Stepper Increment="1" Minimum="0" Maximum="30" Value="{Binding Score}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Opponent' score" />
+                            <Label Style="{StaticResource EntryLabel}" Text="{Binding OpponentScore}" />
+                            <Stepper Increment="1" Minimum="0" Maximum="30" Value="{Binding OpponentScore}" />
+                        </StackLayout>
+                    </Frame>
+                    <Button Style="{StaticResource SaveButton}" Command="{Binding OnSave}" Text="Save" />
+                    <Button Command="{Binding OnDelete}" Text="Delete" Style="{StaticResource DeleteButton}" />
+
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

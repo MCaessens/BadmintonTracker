@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.LocationsPage"
+             xmlns:PageModels="clr-namespace:Imi.Project.Mobile.ViewModels"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <NavigationPage.HasNavigationBar>false</NavigationPage.HasNavigationBar>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Locations" />
+                </Frame>
+            </StackLayout>
+            <StackLayout Grid.Row="1">
+                <RefreshView Command="{Binding OnRefresh}" IsRefreshing="{Binding IsRefreshing}">
+                    <ListView Style="{StaticResource ShowDataListView}" ItemsSource="{Binding Locations}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame CornerRadius="20" BackgroundColor="{StaticResource PrimaryColor}"
+                                           Margin="5, 10">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="7*" />
+                                                <RowDefinition Height="3*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*" />
+                                                <ColumnDefinition Width="50*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout Style="{StaticResource ImageStackLayout}" Grid.Row="0"
+                                                         Grid.Column="0">
+                                                <Frame Style="{StaticResource ImageFrame}">
+                                                    <Image Style="{StaticResource EntityImage}"
+                                                           Source="{Binding ImageUrl}" />
+                                                </Frame>
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="1" Grid.Row="0">
+                                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Name" />
+                                                <Label Text="{Binding Name}" />
+                                            </StackLayout>
+                                            <StackLayout Grid.Row="1" Grid.Column="1">
+                                                <Button HeightRequest="50" Style="{StaticResource DetailsButton}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type PageModels:LocationsPageModel}}, Path=OnViewDetails}"
+                                                        CommandParameter="{Binding .}" Text="Details" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RefreshView>
+            </StackLayout>
+            <ImageButton Grid.Row="1" Style="{StaticResource AddImageButton}" Command="{Binding OnAddLocation}">
+                <ImageButton.Source>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="Android">add_button_white.png</On>
+                        <On Platform="UWP">Icons/add_button_white.png</On>
+                    </OnPlatform>
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

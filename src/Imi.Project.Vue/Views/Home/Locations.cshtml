@@ -1,0 +1,149 @@
+@{
+    ViewData["Title"] = "Locations";
+}
+
+<div id="app">
+    <div v-if="token === undefined" class="text-center">
+        <p>Please login to manage your locations.</p>
+    </div>
+    <div v-if="!locationsLoaded && token !== undefined" class="text-center">
+        <span class="spinner-grow" role="status" aria-hidden="true"></span>
+    </div>
+    <div v-if="token !== undefined && locationsLoaded && selectedLocation === null && newLocation === null">
+        <div class="text-center add-button-custom">
+            <button v-on:click="() => newLocation = {}" class="btn btn-success">Add location</button>
+        </div>
+        <div class="d-flex justify-content-around flex-row flex-wrap">
+            <div class="card" style="width: 20rem;" v-for="location in locations">
+                <img class="card-img-top" :src="location.imageUrl" alt="Picture of location.name"/>
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{location.name}}</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-center">{{location.postalCode}}</li>
+                    <li class="list-group-item text-center">{{location.city}}</li>
+                </ul>
+                <div class="card-body text-center">
+                    <button v-on:click="() => selectedLocation = location" class="btn btn-primary">Details</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-for="i in parseInt(pageInfo.pageAmount)">
+                    <a class="page-link" v-on:click="loadLocationsByPage(i)">{{i}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div v-if="selectedLocation !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="updateAsync" enctype="multipart/form-data">
+            <img class="card-img-top" :src="selectedLocation.imageUrl" alt="Picture of selectedLocation.name"/>
+            <div class="card-body">
+                <h4 class="card-title text-center">Edit Location</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="locationNameInput">Location name</label>
+                        <input required type="text" class="form-control" id="locationNameInput" placeholder="Name" v-model="selectedLocation.name">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="postalcodeInput">Postalcode</label>
+                        <input required type="text" class="form-control" id="postalcodeInput" placeholder="Postalcode" v-model="selectedLocation.postalCode">
+                    </div>
+                    <div class="form-group">
+                        <label for="cityInput">City</label>
+                        <input required type="text" class="form-control" id="cityInput" placeholder="City" v-model="selectedLocation.city">
+                    </div>
+                    <div class="form-group">
+                        <label for="streetInput">Street</label>
+                        <input required type="text" class="form-control" id="streetInput" placeholder="Street" v-model="selectedLocation.street">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitudeInput">Longitude</label>
+                        <input required type="number" class="form-control" id="longitudeInput" placeholder="Latitude" step="0.00001" v-model="selectedLocation.longitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="latitudeInput">Latitude</label>
+                        <input required type="number" class="form-control" id="latitudeInput" placeholder="Latitude" step="0.00001" v-model="selectedLocation.latitude">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="updateImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="updateImageInput" ref="updateImageInput" v-on:change="updateImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isUpdating" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="deleteAsync" type="button" class="btn btn-danger">
+                    <span v-if="isDeleting" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Delete
+                </button>
+                <button v-on:click="() => selectedLocation = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div v-if="newLocation !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="addAsync" enctype="multipart/form-data">
+            <div class="card-body">
+                <h4 class="card-title text-center">Badminton location</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addLocationNameInput">Location name</label>
+                        <input required type="text" class="form-control" id="addLocationNameInput" placeholder="Name" v-model="newLocation.name">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addPostalcodeInput">Postalcode</label>
+                        <input required type="text" class="form-control" id="addPostalcodeInput" placeholder="Postalcode" v-model="newLocation.postalCode">
+                    </div>
+                    <div class="form-group">
+                        <label for="addCityInput">City</label>
+                        <input required type="text" class="form-control" id="addCityInput" placeholder="City" v-model="newLocation.city">
+                    </div>
+                    <div class="form-group">
+                        <label for="addStreetInput">Street</label>
+                        <input required type="text" class="form-control" id="addStreetInput" placeholder="Street" v-model="newLocation.street">
+                    </div>
+                    <div class="form-group">
+                        <label for="addLongitudeInput">Street</label>
+                        <input required type="number" class="form-control" id="addLongitudeInput" placeholder="Latitude" step="0.00001" v-model.number="newLocation.longitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="addLatitudeInput">Street</label>
+                        <input required type="number" class="form-control" id="addLatitudeInput" placeholder="Latitude" step="0.00001" v-model.number="newLocation.latitude">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="addImageInput" ref="addImageInput" v-on:change="addImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isAdding" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="() => newLocation = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <partial name="NotificationModal"></partial>
+</div>
+
+@section Scripts{
+    <script src="~/js/locations.js"></script>
+}

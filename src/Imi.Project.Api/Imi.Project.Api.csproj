@@ -1,0 +1,45 @@
+ <Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.20" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Imi.Project.Api.Infrastructure\Imi.Project.Api.Infrastructure.csproj" />
+    <ProjectReference Include="..\Imi.Project.Common\Imi.Project.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\locations\" />
+    <Folder Include="wwwroot\images\shuttlecocks\" />
+    <Folder Include="wwwroot\images\rackets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000001.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000002.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000003.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000004.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000005.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000006.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000007.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000008.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000009.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\racket\00000000-0000-0000-0000-000000000010.jpg" />
+  </ItemGroup>
+
+
+</Project>

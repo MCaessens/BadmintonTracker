@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Rackets";
+}
+
+<div id="app">
+    <div v-if="token === undefined" class="text-center">
+        <p>Please login to manage your rackets.</p>
+    </div>
+    <div v-if="!racketsLoaded && token !== undefined" class="text-center">
+        <span class="spinner-grow" role="status" aria-hidden="true"></span>
+    </div>
+    <div v-if="token !== undefined && racketsLoaded && selectedRacket === null && newRacket === null">
+        <div class="text-center add-button-custom">
+            <button v-on:click="() => newRacket = {}" class="btn btn-success">Add racket</button>
+        </div>
+        <div class="d-flex justify-content-around flex-row flex-wrap">
+            <div class="card" style="width: 20rem;" v-for="racket in rackets">
+                <img class="card-img-top" :src="racket.imageUrl" alt="Picture of racket.brand"/>
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{racket.brand}}<br/>{{racket.model}}</h4>
+                </div>
+                <div class="card-body text-center">
+                    <button v-on:click="() => selectedRacket = racket" class="btn btn-primary">Details</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-for="i in parseInt(pageInfo.pageAmount)">
+                    <a class="page-link" v-on:click="loadRacketsByPage(i)">{{i}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div v-if="selectedRacket !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="updateAsync" enctype="multipart/form-data">
+            <img class="card-img-top" :src="selectedRacket.imageUrl" alt="Picture of selectedRacket.name"/>
+            <div class="card-body">
+                <h4 class="card-title text-center">Edit Racket</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="racketBrandInput">Racket brand</label>
+                        <input required type="text" class="form-control" id="racketBrandInput" placeholder="Brand" v-model="selectedRacket.brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="racketModelInput">Racket model</label>
+                        <input required type="text" class="form-control" id="racketModelInput" placeholder="Model" v-model="selectedRacket.model">
+                    </div>
+                    <div class="form-group">
+                        <label for="racketTypeInput">Racket type</label>
+                        <input required type="text" class="form-control" id="racketTypeInput" placeholder="Racket type" v-model="selectedRacket.racketType">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="updateImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="updateImageInput" ref="updateImageInput" v-on:change="updateImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isUpdating" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="deleteAsync" type="button" class="btn btn-danger">
+                    <span v-if="isDeleting" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Delete
+                </button>
+                <button v-on:click="() => selectedRacket = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div v-if="newRacket !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="addAsync" enctype="multipart/form-data">
+            <div class="card-body">
+                <h4 class="card-title text-center">Badminton racket</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addRacketBrandInput">Racket brand</label>
+                        <input required type="text" class="form-control" id="addRacketBrandInput" placeholder="Brand" v-model="newRacket.brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="addRacketModelInput">Racket model</label>
+                        <input required type="text" class="form-control" id="addRacketModelInput" placeholder="Model" v-model="newRacket.model">
+                    </div>
+                    <div class="form-group">
+                        <label for="racketTypeInput">Racket Type</label>
+                        <input required type="text" class="form-control" id="addRacketTypeInput" placeholder="Racket type" v-model="newRacket.racketType">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addImageInput">Image</label>
+                        <input type="file" class="form-control-file" id="addImageInput" ref="addImageInput" v-on:change="updateImage">
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isAdding" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="() => newRacket = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <partial name="NotificationModal"></partial>
+</div>
+
+@section Scripts{
+    <script src="~/js/rackets.js"></script>
+}

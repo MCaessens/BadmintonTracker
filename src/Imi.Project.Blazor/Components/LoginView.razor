@@ -1,0 +1,50 @@
+﻿@inject IJSRuntime _js
+<EditForm Model="@_loginModel" OnValidSubmit="async () => await LoginAsync()">
+    <div class="mb-3">
+        <label class="form-label" for="username">Username or e-mail</label>
+        <input class="form-control" id="username" type="text" @bind-value="_loginModel.UserNameOrEmail"/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" id="password" type="password" @bind-value="_loginModel.Password"/>
+    </div>
+    <button type="submit">Login</button>
+</EditForm>
+
+
+@code {
+    private LoginModel _loginModel;
+
+    [Inject]
+    public IAuthService AuthService { get; set; }
+
+    [Inject]
+    public ITokenService TokenService { get; set; }
+
+    [Inject]
+    public IUserManager UserManager { get; set; }
+
+    [Parameter]
+    public EventCallback OnLoggedIn { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _loginModel = new LoginModel();
+    }
+
+    private async Task LoginAsync()
+    {
+        var loggedInModel = await AuthService.LoginAsync(_loginModel);
+        if (!loggedInModel.Succeeded)
+        {
+            await _js.InvokeVoidAsync("alert", "Failed to login. Please try again later.");
+            return;
+        }
+        await TokenService.SaveToken(loggedInModel.Results.First()?.Token);
+        await UserManager.InitUser(_loginModel.UserNameOrEmail);
+        await OnLoggedIn.InvokeAsync(null);
+    }
+
+}

@@ -1,0 +1,152 @@
+@{
+    ViewData["Title"] = "Locations";
+}
+
+<div id="app">
+    <div v-if="!loggedIn" class="text-center">
+        <p>Please login to manage your games.</p>
+    </div>
+    <div v-if="!gamesLoaded && loggedIn" class="text-center">
+        <span class="spinner-grow" role="status" aria-hidden="true"></span>
+    </div>
+    <div v-if="loggedIn && gamesLoaded && selectedGame === null && newGame === null">
+        <div class="text-center add-button-custom">
+            <button v-on:click="() => newGame = {}" class="btn btn-success">Add game</button>
+        </div>
+        <div class="d-flex justify-content-around flex-row flex-wrap">
+            <div class="card" style="width: 20rem;" v-for="game in games">
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{game.userName}}<br/> VS<br/> {{game.opponent}}</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-center">{{game.score}} vs {{game.opponentScore}}</li>
+                    <li class="list-group-item text-center">{{game.status}}</li>
+                </ul>
+                <div class="card-body text-center">
+                    <button v-on:click="() => selectedGame = game" class="btn btn-primary">Details</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-for="i in parseInt(pageInfo.pageAmount)">
+                    <a class="page-link" v-on:click="loadGamesByPage(i)">{{i}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div v-if="selectedGame !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="updateAsync">
+            <div class="card-body">
+                <h4 class="card-title text-center">Badminton game</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="opponentInput">Opponent' name</label>
+                        <input required type="text" class="form-control" id="opponentInput" placeholder="Opponent' name" v-model="selectedGame.opponent">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="yourScoreInput">Your score</label>
+                        <input required type="number" class="form-control" id="yourScoreInput" placeholder="Your score" v-model.number="selectedGame.score">
+                    </div>
+                    <div class="form-group">
+                        <label for="opponentScoreInput">Opponent' score</label>
+                        <input required type="number" class="form-control" id="opponentScoreInput" placeholder="Opponent' score" v-model.number="selectedGame.opponentScore">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="locationInput">Location</label>
+                        <select class="form-control" id="locationInput" v-model="selectedGame.locationId">
+                            <option v-for="location in locations" v-bind:value="location.id">{{location.name}} - {{location.street}} - {{location.city}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="racketInput">Racket</label>
+                        <select class="form-control" id="racketInput" v-model="selectedGame.racketId">
+                            <option v-for="racket in rackets" v-bind:value="racket.id">{{racket.brand}} - {{racket.model}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="shuttleInput">Shuttle</label>
+                        <select class="form-control" id="shuttleInput" v-model="selectedGame.shuttleCockId">
+                            <option v-for="shuttle in shuttles" v-bind:value="shuttle.id">{{shuttle.brand}} - {{shuttle.model}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="list-group-item text-center">{{selectedGame.status}}</li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isUpdating" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="deleteAsync" type="button" class="btn btn-danger">
+                    <span v-if="isDeleting" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Delete
+                </button>
+                <button v-on:click="() => selectedGame = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div v-if="newGame !== null" class="d-flex justify-content-around">
+        <form class="card" style="width: 20rem;" v-on:submit.prevent="addAsync">
+            <div class="card-body">
+                <h4 class="card-title text-center">Badminton game</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addOpponentInput">Opponent' name</label>
+                        <input required type="text" class="form-control" id="addOpponentInput" placeholder="Opponent' name" v-model="newGame.opponent">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addYourScoreInput">Your score</label>
+                        <input required type="number" class="form-control" id="addYourScoreInput" placeholder="Your score" v-model.number="newGame.score">
+                    </div>
+                    <div class="form-group">
+                        <label for="addOpponentScoreInput">Opponent' score</label>
+                        <input required type="number" class="form-control" id="addOpponentScoreInput" placeholder="Opponent' score" v-model.number="newGame.opponentScore">
+                    </div>
+                </li>
+                <li class="list-group-item text-center">
+                    <div class="form-group">
+                        <label for="addLocationInput">Location</label>
+                        <select class="form-control" id="addLocationInput" v-model="newGame.locationId">
+                            <option v-for="location in locations" v-bind:value="location.id">{{location.name}} - {{location.street}} - {{location.city}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addRacketInput">Racket</label>
+                        <select class="form-control" id="addRacketInput" v-model="newGame.racketId">
+                            <option v-for="racket in rackets" v-bind:value="racket.id">{{racket.brand}} - {{racket.model}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addShuttleInput">Shuttle</label>
+                        <select class="form-control" id="addShuttleInput" v-model="newGame.shuttleCockId">
+                            <option v-for="shuttle in shuttles" v-bind:value="shuttle.id">{{shuttle.brand}} - {{shuttle.model}}</option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+            <div class="card-body text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span v-if="isAdding" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Save
+                </button>
+                <button v-on:click="() => newGame = null" type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <partial name="NotificationModal"></partial>
+</div>
+
+@section Scripts{
+    <script src="~/js/games.js"></script>
+}

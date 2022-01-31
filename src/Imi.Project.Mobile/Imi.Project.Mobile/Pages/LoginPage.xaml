@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.LoginPage"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <NavigationPage.HasNavigationBar>false</NavigationPage.HasNavigationBar>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="100*" ></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Login"/>
+                </Frame>
+            </StackLayout>
+            <ScrollView Grid.Row="1">
+                <StackLayout Padding="20">
+                    <Frame>
+                        <StackLayout  HorizontalOptions="Center">
+                            <StackLayout BindingContext="{Binding LoginModel}">
+                                <Label Style="{StaticResource EntryLabel}" Text="E-mail address or Username"/>
+                                <Entry Text="{Binding UserNameOrEmail}" Placeholder="johndoe@example.com"/>
+                                <Label Style="{StaticResource EntryLabel}" Text="Password"/>
+                                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Enter password..."/>
+                            </StackLayout>
+                            <StackLayout>
+                                <Button Command="{Binding OnLogin}" Text="Login"/>
+                                <Button Command="{Binding OnGoToRegister}" Text="No account yet?"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout Grid.Row="2">
+                <Frame Style="{StaticResource Header}">
+                </Frame>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

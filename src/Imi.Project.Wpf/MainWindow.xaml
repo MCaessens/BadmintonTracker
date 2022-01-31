@@ -1,0 +1,84 @@
+﻿<Window x:Class="Imi.Project.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        mc:Ignorable="d"
+        Title="BadmintonTracker" Height="500" Width="800"
+        Background="#252525">
+    <Grid>
+        <GroupBox x:Name="grpLogin" Header="Login" Margin="236,104,236,104" Visibility="Visible">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label Style="{StaticResource DisplayLabel}" Content="Username or Email" Margin="20, 5, 20, 0"/>
+                <TextBox x:Name="txtUserName" Text="WolloW" Margin="20, 5"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Password" Margin="20, 5, 20, 0"/>
+                <PasswordBox x:Name="txtPassword" Password="TEST" Height="25" Margin="20, 5"/>
+                <Button Command="{Binding OnLogin}" x:Name="btnLogin" Content="Login" Width="90" Margin="0, 5" Click="BtnLogin_Click"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Name="grpGames" Header="Games" Margin="148,10,0,10" Visibility="Hidden" HorizontalAlignment="Left" Width="252">
+            <Grid>
+                <ListBox Name="lbGames" SelectionChanged="LbGames_SelectionChanged"  Margin="10,10,10,19"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Name="grpDetails" Header="New Game" Margin="405,10,0,10" Visibility="Hidden" HorizontalAlignment="Left" Width="297">
+            <Grid>
+                <Label x:Name="lblDetailName" Style="{StaticResource DetailsHeaderLabel}" Content="Badminton Game" Margin="10,10,10,0" VerticalAlignment="Top"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Opponent" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Width="68"/>
+                <TextBox x:Name="txtOpponentName" Margin="83,44,10,0" VerticalAlignment="Top"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Your score" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Width="68"/>
+                <TextBox x:Name="txtYourScore" HorizontalAlignment="Left" Margin="83,74,0,0" VerticalAlignment="Top" Width="192"/>
+                <Label Style="{StaticResource DisplayLabel}" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Width="68" Height="40">
+                    <AccessText TextAlignment="Center" TextWrapping="Wrap" Text="Opponent' score"/>
+                </Label>
+                <TextBox x:Name="txtOpponentScore" HorizontalAlignment="Left" Margin="83,112,0,0" VerticalAlignment="Top" Width="192"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Status" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Width="68"/>
+                <Label x:Name="lblStatus" Style="{StaticResource InfoLabel}" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="192"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Winner" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="68"/>
+                <Label x:Name="lblWinner" Style="{StaticResource InfoLabel}" Margin="83,179,10,0" VerticalAlignment="Top"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Location" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top" Width="68"/>
+                <ComboBox x:Name="cmbLocations" Margin="83,209,10,0" VerticalAlignment="Top" Foreground="Black"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Racket" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="68"/>
+                <ComboBox x:Name="cmbRackets" Margin="83,241,10,0" VerticalAlignment="Top"/>
+                <Label Style="{StaticResource DisplayLabel}" Content="Shuttle" HorizontalAlignment="Left" Margin="10,269,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.165,0.058" Width="68"/>
+                <ComboBox x:Name="cmbShuttles" Margin="83,271,10,0" VerticalAlignment="Top"/>
+                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="44,311,0,0" Width="90" Height="25" VerticalAlignment="Top" Click="BtnSave_Click"/>
+                <Button x:Name="btnDelete" Content="Delete" Margin="0,311,44,0" HorizontalAlignment="Right" Width="90" Height="25" VerticalAlignment="Top" Click="BtnDelete_Click"/>
+                <Button x:Name="btnNew" Content="New Game" Margin="0,341,0,0" HorizontalAlignment="Center" Width="197" Height="25" VerticalAlignment="Top" Click="BtnNew_Click"/>
+            </Grid>
+        </GroupBox>
+        <Label Style="{StaticResource LoadingLabel}" x:Name="lblLoggingIn" HorizontalAlignment="Center" VerticalAlignment="Center" Height="102" Width="228">
+            <Label.Triggers>
+                <EventTrigger RoutedEvent="Label.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard Name="sbLoggingIn">
+                            <StringAnimationUsingKeyFrames Storyboard.TargetName="lblLoggingIn" Storyboard.TargetProperty="Content" Duration="0:0:2" RepeatBehavior="Forever">
+                                <DiscreteStringKeyFrame Value="Logging in" KeyTime="0:0:0"/>
+                                <DiscreteStringKeyFrame Value="Logging in." KeyTime="0:0:.5"/>
+                                <DiscreteStringKeyFrame Value="Logging in.." KeyTime="0:0:1"/>
+                                <DiscreteStringKeyFrame Value="Logging in..." KeyTime="0:0:1.5"/>
+                            </StringAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Label.Triggers>
+        </Label>
+        <Label Style="{StaticResource LoadingLabel}" x:Name="lblLoadingData" HorizontalAlignment="Center" VerticalAlignment="Center" Height="102" Width="228">
+            <Label.Triggers>
+                <EventTrigger RoutedEvent="Label.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="sbLoadingData">
+                            <StringAnimationUsingKeyFrames Storyboard.TargetName="lblLoadingData" Storyboard.TargetProperty="Content" Duration="0:0:2" RepeatBehavior="Forever">
+                                <DiscreteStringKeyFrame Value="Loading data" KeyTime="0:0:0"/>
+                                <DiscreteStringKeyFrame Value="Loading data." KeyTime="0:0:.5"/>
+                                <DiscreteStringKeyFrame Value="Loading data.." KeyTime="0:0:1"/>
+                                <DiscreteStringKeyFrame Value="Loading data..." KeyTime="0:0:1.5"/>
+                            </StringAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Label.Triggers>
+        </Label>
+    </Grid>
+</Window>

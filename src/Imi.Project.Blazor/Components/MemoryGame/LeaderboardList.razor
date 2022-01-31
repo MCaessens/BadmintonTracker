@@ -1,0 +1,25 @@
+﻿<div>
+    <table class="table">
+        <tr>
+            <td>Rank</td>
+            <td>Username</td>
+            <td>Attempts</td>
+            <td>Score</td>
+        </tr>
+        @foreach (var item in LeaderboardManager.LeaderBoardItems)
+        {
+            <tr>
+                <td>@(LeaderboardManager.LeaderBoardItems.IndexOf(item) + 1)</td>
+                <td>@item.UserName</td>
+                <td>@item.Attempts</td>
+                <td>@item.Score</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Inject]
+    public ILeaderboardManager LeaderboardManager { get; set; }
+    
+}

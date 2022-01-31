@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Imi.Project.Mobile.Behaviours"
+             x:Class="Imi.Project.Mobile.Pages.AddLocationPage"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Location"/>
+                </Frame>
+            </StackLayout>
+            <ScrollView Grid.Row="1" >
+                <StackLayout Spacing="8">
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Add Image"/>
+                            <Image Source="{Binding SelectedImage}" WidthRequest="300" HeightRequest="300"/>
+                            <Button Command="{Binding OnUploadImage}" Text="Upload image"/>
+                            <Button Command="{Binding OnTakePicture}" Text="Take picture"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Name"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.Name}"/>
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.NameError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Postal Code"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.PostalCode}"/>
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.PostalCodeError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="City"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.City}"/>
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.CityError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Street"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.Street}"/>
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.StreetError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Longitude"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.Longitude}"/>
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.LongitudeError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{StaticResource PropertyTitleLabel}" Text="Latitude"/>
+                                <Entry Style="{StaticResource PlayersDisplayEntry}" Text="{Binding NewLocation.Latitude}"/>
+
+                            </StackLayout>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.LatitudeError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Button Command="{Binding OnSave}" Text="Save" />
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

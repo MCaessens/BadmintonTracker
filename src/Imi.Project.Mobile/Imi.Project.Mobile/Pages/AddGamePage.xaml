@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Imi.Project.Mobile.Behaviours"
+             x:Class="Imi.Project.Mobile.Pages.AddGamePage"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="100*" ></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0">
+                <Frame Style="{StaticResource Header}">
+                    <Label Style="{StaticResource HeaderText}" Text="Games"/>
+                </Frame>
+            </StackLayout>
+            <ScrollView Grid.Row="1" >
+                <StackLayout Spacing="8">
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Badminton Game"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Opponent"/>
+                            <Entry Style="{StaticResource AddPageEntry}" Text="{Binding NewGameModel.Opponent}"/>
+                            <Label Style="{StaticResource ErrorLabel}" Text="{Binding ErrorModel.OpponentError}">
+                                <Label.Behaviors>
+                                    <behaviors:ErrorLabelBehavior/>
+                                </Label.Behaviors>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Location"/>
+                            <Picker ItemsSource="{Binding Locations}" SelectedItem="{Binding SelectedLocation}" Style="{StaticResource AddPagePicker}"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Racket"/>
+                            <Picker ItemsSource="{Binding Rackets}" SelectedItem="{Binding SelectedRacket}" Style="{StaticResource AddPagePicker}"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Style="{StaticResource CardFrame}">
+                        <StackLayout>
+                            <Label Style="{StaticResource PropertyTitleLabel}" Text="Shuttle"/>
+                            <Picker ItemsSource="{Binding ShuttleCocks}" SelectedItem="{Binding SelectedShuttleCock}" Style="{StaticResource AddPagePicker}"/>
+                        </StackLayout>
+                    </Frame>
+                    <Button Command="{Binding OnSave}" Text="Save"/>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

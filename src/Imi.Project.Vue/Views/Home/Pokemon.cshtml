@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Pokémon";
+}
+<div id="app">
+    <div class="text-center">
+        <h3>Welcome to the Pokémon finder!</h3>
+        <p>
+            You can type in a name or id from a pokémon and we will search some information about it for you! <br> If you leave the
+            searchbar empty, we will find you a random pokémon.
+        </p>
+    </div>
+    <div style="margin: 0 auto; width: 380px" v-on:submit.prevent="findPokeAsync">
+        <form class="form-inline my-2 my-lg-0 align-middle">
+            <input class="form-control mr-sm-2" type="search" placeholder="Name or id" aria-label="Search" v-model="searchQuery">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">
+                <span v-if="isSearching" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                Find Pokémon!
+            </button>
+        </form>
+    </div>
+    <div v-if="loadedPokemon !== null" class="d-flex justify-content-around">
+        <div class="card text-center" style="width: 15rem;">
+            <img class="card-img-top" :src="loadedPokemon.sprites.front_default" alt="Image of loadedPokemon.name">
+            <div class="card-body">
+                <h5 class="card-title">{{pokemonName}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <p>
+                        <b>Pokedex Entry</b>
+                    </p>
+                    <p>
+                        {{loadedPokemon.id}}
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <p>
+                        <b>Types</b>
+                    </p>
+                    <p>
+                        {{pokemonTypes}}
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <partial name="NotificationModal"/>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/pokemon.js"></script>
+}

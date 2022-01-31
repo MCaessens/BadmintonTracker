@@ -1,0 +1,38 @@
+﻿<div class="flexbox">
+    @foreach (var card in CurrentInstance.PlayCards)
+    {
+        <MemoryCardComponent MemoryCard="card" OnClick="async () => await OnClicked(card)"></MemoryCardComponent>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public MemoryGameInstance CurrentInstance { get; set; }
+
+    [Inject]
+    public IGameManager GameManager { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        CurrentInstance.OnSetEnded += OnSetEnd;
+    }
+
+    private void OnSetEnd(object sender, EventArgs e)
+    {
+        CurrentInstance.PlayCards = GameManager.GetPlayingCards();
+    }
+
+    private async Task OnClicked(MemoryCard card)
+    {
+        CurrentInstance.SelectCard(card);
+        if (CurrentInstance.SelectedMemoryCards.Count == 2)
+        {
+            await Task.Delay(200);
+            CurrentInstance.PlayTurn();
+        }
+    }
+
+}

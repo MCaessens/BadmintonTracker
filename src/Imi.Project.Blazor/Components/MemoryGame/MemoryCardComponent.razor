@@ -1,0 +1,14 @@
+﻿<img @onclick="async () => await OnClick.InvokeAsync(MemoryCard)" class="flexchild" src="@(MemoryCard.IsTapped ? MemoryCard.Image : _defaultImg)" alt="MemoryCard">
+
+
+@code {
+
+    [Parameter]
+    public MemoryCard MemoryCard { get; set; }
+
+    [Parameter]
+    public EventCallback<MemoryCard> OnClick { get; set; }
+
+    private string _defaultImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Orange_question_mark.svg/1200px-Orange_question_mark.svg.png";
+
+}

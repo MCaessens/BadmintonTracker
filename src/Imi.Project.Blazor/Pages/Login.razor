@@ -1,0 +1,20 @@
+﻿@page "/"
+@page "/login"
+@inject NavigationManager _navManager;
+<Header Title="Login"></Header>
+<div class="row">
+    <LoginView OnLoggedIn="async () => await OnLoggedIn()"></LoginView>
+</div>
+
+@code {
+
+    [Inject]
+    public ITokenService TokenService { get; set; }
+
+    public async Task OnLoggedIn()
+    {
+        var token = await TokenService.GetToken();
+        if (!string.IsNullOrEmpty(token)) _navManager.NavigateTo("/games");
+    }
+
+}

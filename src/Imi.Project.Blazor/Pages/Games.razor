@@ -1,0 +1,32 @@
+﻿@page "/games"
+
+<Header Title="Games"></Header>
+@if (string.IsNullOrEmpty(_token))
+{
+    <p>Please login to manage your games.</p>
+}
+else
+{
+    <GamesList></GamesList>
+}
+
+@code{
+
+    [Inject]
+    public ITokenService TokenService { get; set; }
+
+    private string _token;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await GetToken();
+        StateHasChanged();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task GetToken()
+    {
+        _token = await TokenService.GetToken();
+    }
+
+}

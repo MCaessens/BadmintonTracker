@@ -1,0 +1,108 @@
+﻿
+@if (Games != null)
+{
+    @if (_selectedGameModel == null && !_isAdding)
+    {
+        <div class="add-button">
+            <button class="btn btn-success" @onclick="() => _isAdding = !_isAdding">Add Game</button>
+        </div>
+        <div class="accordion" id="gamesAccordion">
+            @foreach (var game in Games)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading@(Games.IndexOf(game) + 1)">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(Games.IndexOf(game) + 1)" aria-expanded="true" aria-controls="collapse@(Games.IndexOf(game) + 1)">
+                            Badminton Game @(Games.IndexOf(game) + 1)
+                        </button>
+                    </h2>
+                    <div id="collapse@(Games.IndexOf(game) + 1)" class="accordion-collapse collapse" aria-labelledby="heading@(Games.IndexOf(game) + 1)" data-bs-parent="#gamesAccordion">
+                        <div class="accordion-body text-center">
+                            <div class="container">
+                                <div class="row" style="padding:20px 0">
+                                    <div class="col">
+                                        @game.UserName
+                                    </div>
+                                    <div class="col">
+                                        VS
+                                    </div>
+                                    <div class="col">
+                                        @game.Opponent
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0">
+                                    <div class="col">
+                                        @game.Status
+                                    </div>
+                                </div>
+                            </div>
+                            <button @onclick="() => SelectGame(game)" class="btn btn-primary">Details</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else if (_selectedGameModel == null && _isAdding)
+    {
+        <AddGame OnCancel="OnCancel" OnSave="OnSaveAdd"></AddGame>
+    }
+    else
+    {
+        <GameDetail GameModel="_selectedGameModel" OnCancel="OnCancel" OnDelete="OnDeleteSelection" OnSave="OnSaveSelection"></GameDetail>
+    }
+}
+else
+{
+    <div class="center">
+        <div class="state-message">Loading Games...</div>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    public IGamesService GamesService { get; set; }
+
+    private GameModel _selectedGameModel = null;
+    private List<GameModel> Games { get; set; }
+    private bool _isAdding = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var apiGames = await GamesService.ListAllAsync();
+        Games = apiGames.ToList();
+    }
+
+    private void SelectGame(GameModel gameModel)
+    {
+        _selectedGameModel = gameModel;
+    }
+
+    private void OnCancel()
+    {
+        _selectedGameModel = null;
+        _isAdding = false;
+    }
+
+    private void OnDeleteSelection()
+    {
+        Games.Remove(_selectedGameModel);
+        _selectedGameModel = null;
+    }
+
+    private void OnSaveSelection(GameModel updatedModel)
+    {
+        var index = Games.IndexOf(_selectedGameModel);
+        Games.RemoveAt(index);
+        Games.Insert(index, updatedModel);
+        _selectedGameModel = null;
+    }
+
+    private void OnSaveAdd(GameModel gameModel)
+    {
+        Games.Add(gameModel);
+        _isAdding = false;
+    }
+
+}

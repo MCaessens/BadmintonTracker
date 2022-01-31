@@ -1,0 +1,59 @@
+﻿@page "/memory"
+<Header Title="Memory Game"></Header>
+@if (_user == null)
+{
+    <div>Please login to proceed.</div>
+}
+else if (_currentInstance != null)
+{
+    <MemoryStats CurrentInstance="_currentInstance"></MemoryStats>
+    if (!_currentInstance.GameEnded)
+    {
+        <MemoryCardList CurrentInstance="_currentInstance"></MemoryCardList>
+    }
+    else
+    {
+        <div class="row">
+            <p>You won!</p>
+            <button @onclick="@_currentInstance.ResetGame">Try again</button>
+        </div>
+    }
+}
+
+@code {
+
+    [Inject]
+    public IGameManager GameManager { get; set; }
+
+    [Inject]
+    public IUserManager UserManager { get; set; }
+
+    [Inject]
+    public ILeaderboardManager LeaderboardManager { get; set; }
+
+    private User _user;
+
+    private MemoryGameInstance _currentInstance;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender) return;
+
+        _user = await UserManager.GetUserId();
+        if (_user == null) return;
+        StateHasChanged();
+
+        var instance = GameManager.GetInstanceByUserId(_user.Id) ?? GameManager.StartNewInstance(_user);
+        _currentInstance = instance;
+        _currentInstance.OnGameEnded += OnGameEnd;
+        StateHasChanged();
+    }
+
+    private async void OnGameEnd(object sender, GameEndEventArgs e)
+    {
+        LeaderboardManager.AddItem(e.NewEntry);
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

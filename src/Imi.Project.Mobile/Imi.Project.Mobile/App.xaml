@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.App">
+    <Application.Resources>
+        <!--Colors-->
+        <Color x:Key="PrimaryColor">#212121</Color>
+        <Color x:Key="AccentColor">#0084ff</Color>
+        <Color x:Key="BackgroundColor">#525252</Color>
+        <Color x:Key="TertiaryColor">#b50012</Color>
+
+        <!--Frames-->
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+        </Style>
+        <Style x:Key="CardFrame" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Margin" Value="5, 10"/>
+        </Style>
+        <Style x:Key="Header" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="CornerRadius" Value="0"/>
+        </Style>
+        <Style TargetType="Frame" x:Key="ImageFrame">
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+            <Setter Property="WidthRequest">
+                <Setter.Value>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="UWP">350</On>
+                        <On Platform="Android">300</On>
+                    </OnPlatform>
+                </Setter.Value>
+            </Setter>  
+            <Setter Property="HeightRequest">
+                <Setter.Value>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="UWP">350</On>
+                        <On Platform="Android">300</On>
+                    </OnPlatform>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--Labels-->
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="HeaderText" TargetType="Label">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        </Style>
+
+        <Style x:Key="EntryLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style x:Key="GameStatusLabel" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="GameHeader" TargetType="Label">
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="PropertyTitleLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="PropertyLabel" TargetType="Label">
+            <Setter Property="HorizontalTextAlignment" Value="End"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+        </Style>
+
+        <Style x:Key="ScoreLabel" TargetType="Label">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        </Style>
+
+        <Style x:Key="ErrorLabel" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource TertiaryColor}"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <!--Layouts-->
+        <Style TargetType="StackLayout">
+            <Setter Property="Spacing" Value="15"/>
+        </Style>
+        <Style TargetType="StackLayout" x:Key="ImageStackLayout">
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <!--Buttons-->
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="Margin" Value="0, 0"/>
+        </Style>
+
+        <Style x:Key="AddImageButton" TargetType="ImageButton">
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="HeightRequest" Value="65"/>
+            <Setter Property="WidthRequest" Value="65"/>
+            <Setter Property="VerticalOptions" Value="End"/>
+            <Setter Property="HorizontalOptions" Value="End"/>
+        </Style>
+
+        <Style x:Key="DetailsButton" TargetType="Button">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="WidthRequest">
+                <Setter.Value>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="UWP">400</On>
+                        <On Platform="Android">250</On>
+                    </OnPlatform>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource TertiaryColor}"/>
+            <Setter Property="Margin" Value="50, 0"/>
+        </Style>
+        <Style x:Key="SaveButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
+            <Setter Property="Margin" Value="50, 0"/>
+        </Style>
+
+        <!--Entries-->
+        <Style TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="WidthRequest">
+                <OnPlatform x:TypeArguments="x:Double">
+                    <On Platform="Android" Value="250"></On>
+                    <On Platform="UWP" Value="500"></On>
+                </OnPlatform>
+            </Setter>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="PlaceholderColor" Value="LightGray"/>
+        </Style>
+        
+        <Style x:Key="AddPageEntry" TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="WidthRequest" Value="500"/>
+        </Style>
+
+        <Style x:Key="PlayersDisplayEntry" TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="End"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+        </Style>
+
+        <Style x:Key="DetailHeaderEntry" TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        </Style>
+
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}"/>
+        </Style>
+        
+        <!--ListView-->
+            
+        <Style x:Key="ShowDataListView" TargetType="ListView">
+            <Setter Property="SelectionMode" Value="None"/>
+            <Setter Property="RowHeight">
+                <OnPlatform x:TypeArguments="x:Int32">
+                    <On Platform="Android" Value="250"/>
+                    <On Platform="UWP" Value="370"/>
+                </OnPlatform>
+            </Setter>
+        </Style>
+
+
+        <!--Pickers-->
+
+        <Style TargetType="Picker">
+            <Setter Property="HorizontalTextAlignment" Value="End"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+            <Setter Property="WidthRequest">
+                <OnPlatform x:TypeArguments="x:Double">
+                    <On Platform="Android" Value="250"></On>
+                    <On Platform="UWP" Value="500"></On>
+                </OnPlatform>
+            </Setter>
+            <Setter Property="TextColor" Value="White"/>
+        </Style>
+
+        <Style x:Key="AddPagePicker" TargetType="Picker">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="WidthRequest" Value="500"/>
+        </Style>
+
+
+        <!--Pages-->
+        <Style TargetType="ContentPage">
+            <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}"/>
+        </Style>
+        
+        <!--Images-->
+        <Style x:Key="EntityImage" TargetType="Image">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+        
+        <!--Steppers-->
+        <Style TargetType="Stepper">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+        
+    </Application.Resources>
+</Application>
